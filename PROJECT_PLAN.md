@@ -633,10 +633,10 @@ Centang saat selesai. Angka di akhir = estimasi jam. **DoD** = syarat sprint dia
 
 ### Sprint 5: Polish dan rilis (12 jam)
 
-- [ ] T5.1 `/api/health`, workflow keep-alive, uji manual lewat `workflow_dispatch`, 1,5
+- [x] T5.1 `/api/health`, workflow keep-alive, 1,5 — diuji manual (`curl /api/health` → `{ok:true,time:...}`); `workflow_dispatch` asli perlu secret `SITE_URL` di GitHub, diisi pemilik akun setelah deploy
 - [ ] T5.2 E2E Playwright: tamu memutar trailer, daftar ke profil ke My List, pencarian, 4
 - [ ] T5.3 Audit Lighthouse dan perbaikan performa, aksesibilitas, SEO, 3
-- [ ] T5.4 Header keamanan + CSP, `sitemap.ts`, `robots.ts`, 1,5
+- [x] T5.4 Header keamanan + CSP, `sitemap.ts`, `robots.ts`, 1,5
 - [ ] T5.5 README: demo GIF, screenshot, diagram arsitektur, tautan live, cara menjalankan, 2
 
 **DoD:** semua angka di Metrik sukses (bagian 1.6) tercapai.
