@@ -1,20 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Title } from "@/lib/tmdb/mappers";
+import { cn } from "@/lib/utils";
 
 /**
  * Poster card reused across Trending, Populer, Top Rated, Search, My List,
  * and Judul Serupa (NONTONIN_MASTER_DESIGN_AGENT_PROMPT.md section 26 — one
  * MediaCard, not five look-alikes). 2:3 poster ratio, hover scale 1.05x.
+ *
+ * Defaults to a fixed 168px width for horizontal rails; pass `className`
+ * with `w-full` (and drop the rail from its flex container) to use it
+ * inside a CSS grid instead (Search, My List).
  */
-export function MediaCard({ title }: { title: Title }) {
+export function MediaCard({ title, className }: { title: Title; className?: string }) {
   const href = `/title/${title.mediaType}/${title.id}`;
   const badge = title.mediaType === "movie" ? "Film" : "Series";
 
   return (
     <Link
       href={href}
-      className="group relative block w-[168px] shrink-0 overflow-hidden rounded-[8px] bg-surface transition-transform duration-200 ease-out hover:z-10 hover:scale-[1.05] focus-visible:z-10 focus-visible:scale-[1.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      className={cn(
+        "group relative block w-[168px] shrink-0 overflow-hidden rounded-[8px] bg-surface transition-transform duration-200 ease-out hover:z-10 hover:scale-[1.05] focus-visible:z-10 focus-visible:scale-[1.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+        className,
+      )}
       aria-label={`${title.title}, ${badge}, ${title.year ?? ""}`}
     >
       <div className="relative aspect-2/3">
