@@ -47,6 +47,10 @@ Full PRD/SRS/SDD/UI-UX spec: [PROJECT_PLAN.md](./PROJECT_PLAN.md).
   enabled (`supabase/migrations/0001_init.sql`): a user can only read or write rows belonging
   to their own `profiles`. Server Actions always run with the caller's session, never the
   service-role key.
+- `scripts/verify-rls.mjs` proves it against a real project: creates two throwaway accounts,
+  confirms account B gets zero rows reading account A's profiles and is rejected writing to
+  account A's `my_list`, and that a 6th profile on one account is rejected
+  (`profile_limit_reached`). Run it with `npm run verify:rls` after filling in `.env.local`.
 
 ## Running locally
 
@@ -67,6 +71,7 @@ npm run lint       # ESLint
 npm run typecheck  # tsc --noEmit
 npm run test       # Vitest unit tests
 npm run build      # production build
+npm run verify:rls # integration check against real Supabase (see Auth and RLS above)
 ```
 
 ## Deployment notes (free tier)

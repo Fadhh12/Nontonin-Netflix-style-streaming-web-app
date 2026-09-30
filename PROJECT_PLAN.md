@@ -584,7 +584,7 @@ Centang saat selesai. Angka di akhir = estimasi jam. **DoD** = syarat sprint dia
 - [x] T0.1 Buat repo GitHub publik dan `create-next-app` (TypeScript, Tailwind, App Router, ESLint), 0,5
 - [x] T0.2 Pasang font, token warna, layout dasar (UI primitives hand-rolled dengan class-variance-authority menggantikan shadcn/ui CLI, sistem visual sama), 1,5
 - [x] T0.3 Tulis `lib/tmdb` (client, tipe, mapper, pemilih trailer) + unit test, 2
-- [ ] T0.4 Buat project Supabase, jalankan migrasi `0001`, pasang `@supabase/ssr` + `middleware.ts`, 1,5 — **kode sisi client/server dan migrasi SQL sudah ditulis**; pembuatan project Supabase asli dan pengisian env var perlu dilakukan pemilik akun (lihat CLAUDE_CODE_PROMPT.md bagian 1)
+- [x] T0.4 Buat project Supabase (`Marwa.id`), jalankan migrasi `0001`, pasang `@supabase/ssr` + `middleware.ts`, 1,5
 - [ ] T0.5 CI (lint, typecheck, test, build) dan deploy awal ke Vercel, 1 — **workflow CI GitHub Actions sudah aktif**; import ke Vercel perlu dilakukan pemilik akun
 
 **DoD:** URL Vercel terbuka, CI hijau. CI sudah hijau secara lokal; deploy Vercel menunggu import repo oleh pemilik akun.
@@ -612,14 +612,14 @@ Centang saat selesai. Angka di akhir = estimasi jam. **DoD** = syarat sprint dia
 
 ### Sprint 3: Auth dan Profil (14 jam)
 
-- [ ] T3.1 Daftar, masuk, keluar (form + Zod + pesan error), 3
-- [ ] T3.2 Guard route dan `returnTo` aman, 1,5
-- [ ] T3.3 Halaman `/profiles` + Server Action buat, ubah, hapus, pilih profil, 4
-- [ ] T3.4 Aturan nama unik, batas 5 profil, larangan hapus profil terakhir, 1,5
-- [ ] T3.5 Profil anak (filter genre), 1,5
-- [ ] T3.6 Tes integrasi RLS, 2,5
+- [x] T3.1 Daftar, masuk, keluar (form + Zod + pesan error), 3
+- [x] T3.2 Guard route dan `returnTo` aman, 1,5
+- [x] T3.3 Halaman `/profiles` + Server Action buat, ubah, hapus, pilih profil, 4
+- [x] T3.4 Aturan nama unik, batas 5 profil, larangan hapus profil terakhir, 1,5
+- [x] T3.5 Profil anak (filter genre), 1,5
+- [x] T3.6 Tes integrasi RLS (`scripts/verify-rls.mjs`), 2,5
 
-**DoD:** AC5 dan AC6 lolos.
+**DoD:** AC5 dan AC6 lolos — diverifikasi langsung lewat `npm run verify:rls` terhadap project Supabase asli (2 akun dummy, hasil: limit 5 profil ditolak dengan benar, akun B tidak bisa baca/tulis data akun A).
 
 ### Sprint 4: My List, Riwayat, Reaksi (10 jam)
 
