@@ -6,6 +6,9 @@ import { getTitleDetail } from "@/lib/tmdb/queries";
 import { youtubeEmbedUrl } from "@/lib/tmdb/trailer";
 import { TmdbError } from "@/lib/tmdb/client";
 import type { MediaType } from "@/lib/tmdb/types";
+import { isInMyList } from "@/lib/actions/my-list";
+import { getReaction } from "@/lib/actions/reactions";
+import { recordView } from "@/lib/actions/history";
 
 interface PageProps {
   params: Promise<{ type: string; id: string }>;
@@ -53,6 +56,20 @@ export default async function TitleDetailPage({ params }: PageProps) {
   const detail = await loadDetail(mediaType, numericId);
   if (!detail) notFound();
 
+  // Fire-and-forget: recordView no-ops for guests, and a failed write here
+  // shouldn't block rendering the page (SRS FR-H1).
+  void recordView({
+    tmdbId: detail.id,
+    mediaType: detail.mediaType,
+    title: detail.title,
+    posterPath: detail.posterPath,
+  });
+
+  const [inList, reaction] = await Promise.all([
+    isInMyList(detail.mediaType, detail.id),
+    getReaction(detail.mediaType, detail.id),
+  ]);
+
   const durationLabel =
     detail.mediaType === "movie" && detail.runtimeMinutes
       ? `${Math.floor(detail.runtimeMinutes / 60)}h ${detail.runtimeMinutes % 60}m`
@@ -95,8 +112,13 @@ export default async function TitleDetailPage({ params }: PageProps) {
 
       <div className="mx-auto max-w-[1440px] px-6 py-8 md:px-16">
         <TitleDetailActions
+          tmdbId={detail.id}
+          mediaType={detail.mediaType}
           title={detail.title}
+          posterPath={detail.posterPath}
           trailerEmbedUrl={detail.trailerKey ? youtubeEmbedUrl(detail.trailerKey) : null}
+          initialInList={inList}
+          initialReaction={reaction}
         />
 
         <div className="mt-8 grid gap-8 md:grid-cols-[1.4fr_0.8fr]">
