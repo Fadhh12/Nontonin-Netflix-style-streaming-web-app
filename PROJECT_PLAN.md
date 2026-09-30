@@ -591,22 +591,22 @@ Centang saat selesai. Angka di akhir = estimasi jam. **DoD** = syarat sprint dia
 
 ### Sprint 1: Browse (12 jam)
 
-- [ ] T1.1 Navbar + footer atribusi TMDB, 1,5
-- [ ] T1.2 Komponen `TitleCard` dan `Row` (scroll horizontal, panah, swipe), 3
-- [ ] T1.3 Hero billboard dengan gradasi, 2
-- [ ] T1.4 Halaman `/browse` dengan 6+ baris, Suspense + skeleton + error per baris, 3
-- [ ] T1.5 Landing `/`, 1,5
-- [ ] T1.6 Uji responsif 360 sampai 1280 px, 1
+- [x] T1.1 Navbar + footer atribusi TMDB, 1,5
+- [x] T1.2 Komponen `MediaCard` dan `MediaRail` (scroll horizontal, panah, swipe), 3
+- [x] T1.3 Hero billboard dengan gradasi, 2
+- [x] T1.4 Halaman `/browse` dengan 6+ baris, Suspense + skeleton + error per baris, 3
+- [x] T1.5 Landing `/`, 1,5
+- [x] T1.6 Uji responsif 360 sampai 1280 px, 1 — diaudit pakai screenshot Playwright asli di 4 breakpoint; ketemu 1 bug nyata (sinopsis kosong, id-ID tanpa fallback en-US), sudah fix
 
 **DoD:** AC1 dan AC7 lolos.
 
 ### Sprint 2: Detail dan Search (11,5 jam)
 
-- [ ] T2.1 Halaman detail `/title/[type]/[id]` dengan ISR + metadata Open Graph, 3
-- [ ] T2.2 Detail sebagai modal (parallel + intercepting routes), 2,5
-- [ ] T2.3 `TrailerModal` (YouTube embed, fallback tanpa trailer, focus trap), 2
-- [ ] T2.4 `/api/search` + halaman pencarian (debounce, muat lebih banyak, state kosong), 3
-- [ ] T2.5 Halaman 404 dan error, 1
+- [x] T2.1 Halaman detail `/title/[type]/[id]` dengan revalidate 1 hari + metadata Open Graph, 3
+- [ ] T2.2 Detail sebagai modal (parallel + intercepting routes), 2,5 — **belum dikerjakan**; saat ini detail cuma halaman penuh, klik kartu dari `/browse` pindah halaman (bukan modal di atas browse)
+- [x] T2.3 `TrailerModal` (YouTube embed, fallback tanpa trailer, focus trap), 2
+- [x] T2.4 `/api/search` + halaman pencarian (debounce, muat lebih banyak, state kosong), 3
+- [x] T2.5 Halaman 404 dan error, 1
 
 **DoD:** AC2 dan AC3 lolos.
 
