@@ -14,23 +14,35 @@ test("guest browses, opens a title, and can try to play its trailer", async ({ p
   const firstCard = page.locator('a[href^="/title/"]').first();
   await firstCard.waitFor({ state: "visible", timeout: 15_000 });
   await firstCard.click();
+  await page.waitForURL(/\/title\//, { timeout: 15_000 });
 
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  // T2.2: opened via a card click, so this is the intercepted modal (S07),
+  // not a full navigation — /browse stays mounted underneath it.
+  const detailDialog = page.getByRole("dialog", { name: "Detail judul" });
+  await expect(detailDialog).toBeVisible();
+  await expect(detailDialog.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByText("Trending hari ini")).toBeVisible();
 
   const trailerButton = page.getByRole("button", { name: "Putar Trailer" });
   await trailerButton.click();
 
-  const dialog = page.getByRole("dialog");
-  await expect(dialog).toBeVisible();
+  const trailerDialog = page.getByRole("dialog", { name: /^Trailer / });
+  await expect(trailerDialog).toBeVisible();
 
   // Real TMDB data: either a playable trailer or the explicit unavailable
   // state — both are valid, a raw error/blank modal is not.
-  const hasVideo = await dialog.locator("iframe").count();
+  const hasVideo = await trailerDialog.locator("iframe").count();
   if (hasVideo === 0) {
-    await expect(dialog.getByText("Trailer belum tersedia")).toBeVisible();
+    await expect(trailerDialog.getByText("Trailer belum tersedia")).toBeVisible();
   }
 
+  // Esc closes only the trailer (topmost), not the detail modal under it.
   await page.keyboard.press("Escape");
-  await expect(dialog).not.toBeVisible();
+  await expect(trailerDialog).not.toBeVisible();
   await expect(trailerButton).toBeFocused();
+  await expect(detailDialog).toBeVisible();
+
+  // A second Esc then closes the detail modal, returning to /browse.
+  await page.keyboard.press("Escape");
+  await expect(page).toHaveURL(/\/browse$/);
 });
