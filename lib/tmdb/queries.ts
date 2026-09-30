@@ -57,6 +57,28 @@ export async function discoverByGenre(
   return data.results.map((item) => mapListItem(item, mediaType));
 }
 
+/**
+ * SRS G05: "language=id-ID dengan fallback en-US". TMDB doesn't fall back
+ * automatically — a title with no Indonesian translation returns overview:
+ * "" rather than the English text. Used wherever overview is rendered
+ * (detail page, hero) so a title never shows a blank synopsis.
+ */
+export async function getOverviewFallback(
+  mediaType: MediaType,
+  id: number,
+): Promise<string> {
+  try {
+    const data = await tmdbFetch<{ overview: string }>(
+      `/${mediaType}/${id}`,
+      { language: "en-US" },
+      { revalidate: DETAIL_REVALIDATE },
+    );
+    return data.overview ?? "";
+  } catch {
+    return "";
+  }
+}
+
 export async function getTitleDetail(
   mediaType: MediaType,
   id: number,
@@ -66,7 +88,13 @@ export async function getTitleDetail(
     { append_to_response: "videos,credits,recommendations" },
     { revalidate: DETAIL_REVALIDATE },
   );
-  return mapDetail(data, mediaType);
+  const detail = mapDetail(data, mediaType);
+
+  if (!detail.overview) {
+    detail.overview = await getOverviewFallback(mediaType, id);
+  }
+
+  return detail;
 }
 
 export async function getVideosFor(mediaType: MediaType, id: number) {
