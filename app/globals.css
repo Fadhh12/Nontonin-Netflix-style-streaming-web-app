@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+/*
+ * Nontonin design tokens.
+ * Source of truth: PROJECT_PLAN.md section 4.1 and
+ * NONTONIN_MASTER_DESIGN_AGENT_PROMPT.md section 03/04.
+ * Dark cinematic streaming theme — do not add colors outside this palette.
+ */
+:root {
+  --bg: #0b0b0f;
+  --surface: #15151c;
+  --surface-alt: #1d1d25;
+  --primary: #ff6b35;
+  --primary-hover: #e95a2b;
+  --text: #f2f2f5;
+  --muted: #a3a3b2;
+  --border: rgba(255, 255, 255, 0.1);
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --error: #dc2626;
+  --overlay: rgba(0, 0, 0, 0.6);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --font-heading: var(--font-plus-jakarta-sans);
+  --font-body: var(--font-inter);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body), Inter, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

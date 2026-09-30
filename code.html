@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nontonin — Streaming UI Concept</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0B0B0F; --surface:#15151C; --surface2:#1D1D25;
+  --primary:#FF6B35; --primary2:#E95A2B;
+  --text:#F2F2F5; --muted:#A3A3B2; --line:rgba(255,255,255,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.nav{
+  position:fixed;z-index:30;top:0;left:0;right:0;height:70px;
+  display:flex;align-items:center;padding:0 5vw;gap:34px;
+  background:linear-gradient(180deg,rgba(11,11,15,.92),rgba(11,11,15,0));
+  transition:.25s
+}
+.nav.scrolled{background:rgba(11,11,15,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.logo{font-family:"Plus Jakarta Sans";font-size:25px;font-weight:800;letter-spacing:-1.3px;color:#fff}
+.logo span{color:var(--primary)}
+.menu{display:flex;gap:25px;font-size:14px;color:#c7c7d0}
+.menu a:hover,.menu a.active{color:#fff}
+.navright{margin-left:auto;display:flex;align-items:center;gap:15px}
+.iconbtn{width:40px;height:40px;border:0;background:transparent;color:#fff;font-size:20px;border-radius:8px}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ff9a62,#6d3e9e);border:2px solid rgba(255,255,255,.4)}
+.cta{border:0;border-radius:8px;padding:11px 19px;background:var(--primary);color:#fff;font-weight:700}
+.cta:hover{background:var(--primary2)}
+.hero{
+  min-height:680px;position:relative;display:flex;align-items:center;
+  padding:120px 5vw 80px;overflow:hidden;
+  background:
+   linear-gradient(90deg,#0B0B0F 0%,rgba(11,11,15,.87) 24%,rgba(11,11,15,.28) 66%,rgba(11,11,15,.65) 100%),
+   linear-gradient(0deg,#0B0B0F 0%,transparent 40%),
+   url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=2000&q=85") center/cover;
+}
+.hero:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 72% 48%,rgba(255,107,53,.13),transparent 25%);pointer-events:none}
+.heroContent{position:relative;z-index:2;max-width:600px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:17px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",sans-serif}
+.hero h1{font-size:clamp(44px,5.2vw,72px);line-height:1.02;letter-spacing:-.045em;margin:0 0 18px}
+.meta{display:flex;gap:10px;align-items:center;color:#d8d8df;font-size:14px;margin-bottom:18px}
+.dot{width:4px;height:4px;background:#777;border-radius:50%}
+.hero p{color:#c0c0ca;line-height:1.75;max-width:530px;margin:0 0 28px;font-size:15px}
+.actions{display:flex;gap:11px}
+.secondary{border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:11px 19px;background:rgba(255,255,255,.09);color:#fff;font-weight:600}
+.secondary:hover{background:rgba(255,255,255,.15)}
+.content{max-width:1400px;margin:-15px auto 0;padding:0 5vw 70px;position:relative;z-index:5}
+.row{margin:35px 0 0}
+.rowhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+.row h2{font-size:20px;margin:0;letter-spacing:-.02em}
+.rowlink{font-size:12px;color:var(--muted)}
+.cards{display:flex;gap:13px;overflow-x:auto;padding:3px 3px 14px;scrollbar-width:none}
+.cards::-webkit-scrollbar{display:none}
+.card{flex:0 0 168px;aspect-ratio:2/3;position:relative;border-radius:8px;overflow:hidden;background:var(--surface);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:scale(1.045);box-shadow:0 18px 40px rgba(0,0,0,.45);z-index:2}
+.card img{width:100%;height:100%;object-fit:cover;display:block}
+.card:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.9))}
+.cardinfo{position:absolute;z-index:2;bottom:11px;left:11px;right:8px}
+.cardtitle{font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cardsmall{color:#bdbdc6;font-size:10px;margin-top:4px}
+.badge{display:inline-block;background:rgba(255,107,53,.92);padding:3px 6px;border-radius:4px;font-size:9px;font-weight:700;margin-bottom:6px}
+.feature{margin-top:55px;padding:45px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.featuregrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.featurebox{background:linear-gradient(145deg,var(--surface),rgba(21,21,28,.55));border:1px solid var(--line);border-radius:10px;padding:25px}
+.featureicon{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:rgba(255,107,53,.13);color:var(--primary);font-size:20px;margin-bottom:17px}
+.featurebox h3{font-size:16px;margin:0 0 7px}.featurebox p{font-size:13px;line-height:1.65;color:var(--muted);margin:0}
+.sectionTitle{font-size:28px;margin:0 0 7px}.sectionSub{color:var(--muted);font-size:13px;margin:0 0 25px}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.grid .card{width:auto;flex:auto}
+.demoSection{padding-top:70px}
+.screen{
+  background:#08080b;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:30px;
+  box-shadow:0 30px 100px rgba(0,0,0,.4)
+}
+.screenbar{height:42px;background:#111117;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 15px;gap:7px}
+.dotwin{width:8px;height:8px;border-radius:50%;background:#45454e}
+.screenbar span:last-child{margin-left:auto;color:#686875;font-size:10px}
+.profileScreen{min-height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px}
+.profileScreen h2{font-size:30px;margin:0 0 28px}
+.profiles{display:flex;gap:26px;flex-wrap:wrap;justify-content:center}
+.profile{width:110px;text-align:center;color:#d8d8df;font-size:12px}
+.pavatar{width:100px;height:100px;border-radius:50%;margin:auto auto 10px;border:2px solid transparent;background-size:cover;background-position:center}
+.profile:hover .pavatar{border-color:var(--primary)}
+.add .pavatar{display:grid;place-items:center;background:var(--surface2);font-size:34px;color:var(--muted)}
+.detailDemo{
+  min-height:430px;padding:80px 55px 45px;position:relative;
+  background:
+    linear-gradient(90deg,rgba(8,8,11,.98) 0%,rgba(8,8,11,.84) 43%,rgba(8,8,11,.22) 100%),
+    linear-gradient(0deg,#08080b,transparent 45%),
+    url("https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1800&q=80") center/cover;
+}
+.detailDemo h2{font-size:42px;margin:0 0 12px}.detailDemo p{max-width:580px;color:#c0c0c8;line-height:1.7;font-size:13px}
+.detailGrid{display:grid;grid-template-columns:1.4fr .8fr;gap:35px;margin-top:28px}
+.infoPanel{background:rgba(15,15,20,.78);border:1px solid var(--line);padding:18px;border-radius:10px}
+.infoPanel b{font-size:12px}.infoPanel p{font-size:12px;margin:8px 0;color:var(--muted)}
+.authArea{padding:80px 20px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.authCard{max-width:410px;margin:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:32px;width:100%}
+.authCard h2{font-size:25px;margin:0 0 7px}.authCard>p{font-size:12px;color:var(--muted);margin:0 0 24px}
+label{display:block;font-size:12px;color:#c8c8d0;margin:0 0 7px}
+input{width:100%;height:46px;background:#0f0f14;border:1px solid var(--line);border-radius:8px;color:#fff;padding:0 13px;margin-bottom:15px;outline:none}
+input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(255,107,53,.2)}
+.full{width:100%}
+.divider{display:flex;align-items:center;gap:10px;color:#696974;font-size:11px;margin:20px 0}.divider:before,.divider:after{content:"";height:1px;background:var(--line);flex:1}
+.google{width:100%;height:44px;border:1px solid var(--line);background:transparent;color:#fff;border-radius:8px;font-weight:600}
+.authfoot{text-align:center;color:var(--muted);font-size:11px;margin-top:18px}.authfoot span{color:var(--primary)}
+footer{border-top:1px solid var(--line);padding:35px 5vw 50px;color:var(--muted);font-size:11px;display:flex;justify-content:space-between;gap:20px}
+.mobileNav{display:none}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(5,1fr)}.card{flex-basis:150px}}
+@media(max-width:800px){
+  .nav{padding:0 20px}.menu{display:none}.navright .cta{display:none}
+  .hero{min-height:620px;padding:115px 20px 70px}
+  .content{padding:0 20px 55px}.hero h1{font-size:46px}.featuregrid{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(3,1fr)}.authArea{grid-template-columns:1fr}
+  .detailGrid{grid-template-columns:1fr}.detailDemo{padding:55px 25px 35px}
+  footer{padding-bottom:80px;display:block}.mobileNav{position:fixed;display:flex;z-index:40;bottom:0;left:0;right:0;height:62px;background:rgba(14,14,19,.97);border-top:1px solid var(--line);justify-content:space-around;align-items:center}
+  .mobileNav a{font-size:10px;color:#92929e;text-align:center}.mobileNav a.active{color:var(--primary)}.mobileNav i{display:block;font-size:18px;margin-bottom:2px;font-style:normal}
+}
+@media(max-width:500px){.hero h1{font-size:38px}.grid{grid-template-columns:repeat(2,1fr)}.card{flex-basis:130px}.profiles{gap:18px}.profile{width:85px}.pavatar{width:76px;height:76px}}
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+<a class="logo" href="#home">Nonton<span>in</span></a>
+<div class="menu">
+<a class="active" href="#home">Beranda</a>
+<a href="#browse">Film</a>
+<a href="#browse">Series</a>
+<a href="#mylist">My List</a>
+</div>
+<div class="navright">
+<button aria-label="Cari" class="iconbtn" onclick="focusSearch()">⌕</button>
+<button aria-label="Profil" class="iconbtn">◉</button>
+<button class="cta" onclick="document.querySelector('#auth').scrollIntoView()">Coba Demo</button>
+</div>
+</nav>
+<main id="home">
+<section class="hero">
+<div class="heroContent">
+<div class="eyebrow">Featured • Nontonin Original Concept</div>
+<h1>Temukan tontonan berikutnya.</h1>
+<div class="meta"><span>2026</span><span class="dot"></span><span>Movie</span><span class="dot"></span><span>⭐ 8.7</span></div>
+<p>Jelajahi film dan series, putar trailer, dan simpan judul favoritmu dalam satu pengalaman streaming yang sederhana dan sinematik.</p>
+<div class="actions">
+<button class="cta" onclick="openDetail()">▶ Putar Trailer</button>
+<button class="secondary" onclick="openDetail()">ⓘ Info</button>
+</div>
+</div>
+</section>
+<section class="content" id="browse">
+<div class="row">
+<div class="rowhead"><h2>Trending hari ini</h2><span class="rowlink">Lihat semua →</span></div>
+<div class="cards" id="trending"></div>
+</div>
+<div class="row">
+<div class="rowhead"><h2>Populer</h2><span class="rowlink">Lihat semua →</span></div>
+<div class="cards" id="popular"></div>
+</div>
+<div class="row">
+<div class="rowhead"><h2>Top Rated</h2><span class="rowlink">Lihat semua →</span></div>
+<div class="cards" id="rated"></div>
+</div>
+<section class="feature">
+<div class="rowhead"><h2>Kenapa Nontonin?</h2></div>
+<div class="featuregrid">
+<div class="featurebox"><div class="featureicon">◉</div><h3>Jelajahi film</h3><p>Temukan film dan series berdasarkan popularitas, rating, dan genre favoritmu.</p></div>
+<div class="featurebox"><div class="featureicon">▶</div><h3>Putar trailer</h3><p>Lihat trailer resmi sebelum memutuskan judul mana yang ingin kamu tonton.</p></div>
+<div class="featurebox"><div class="featureicon">＋</div><h3>Simpan favorit</h3><p>Tambahkan judul ke My List dan kembali lagi kapan saja.</p></div>
+</div>
+</section>
+<section class="demoSection" id="profiles">
+<h2 class="sectionTitle">Siapa yang menonton?</h2>
+<p class="sectionSub">Pilih profil untuk mendapatkan pengalaman yang lebih personal.</p>
+<div class="screen">
+<div class="screenbar"><i class="dotwin"></i><i class="dotwin"></i><i class="dotwin"></i><span>Nontonin / profiles</span></div>
+<div class="profileScreen">
+<h2>Siapa yang menonton?</h2>
+<div class="profiles">
+<div class="profile"><div class="pavatar" style="background-image:url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>Nabila</div>
+<div class="profile"><div class="pavatar" style="background-image:url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>Raka</div>
+<div class="profile"><div class="pavatar" style="background-image:url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>Dina</div>
+<div class="profile"><div class="pavatar" style="background-image:url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>Kids</div>
+<div class="profile add"><div class="pavatar">＋</div>Tambah profil</div>
+</div>
+</div>
+</div>
+</section>
+<section class="demoSection" id="mylist">
+<h2 class="sectionTitle">My List</h2>
+<p class="sectionSub">Judul yang kamu simpan.</p>
+<div class="grid" id="mygrid"></div>
+</section>
+<section class="demoSection">
+<h2 class="sectionTitle">Detail title</h2>
+<p class="sectionSub">Contoh tampilan detail yang dibuka dari Browse.</p>
+<div class="screen">
+<div class="screenbar"><i class="dotwin"></i><i class="dotwin"></i><i class="dotwin"></i><span>Title detail</span></div>
+<div class="detailDemo">
+<div class="eyebrow">Movie • 2026</div>
+<h2>The Last Horizon</h2>
+<div class="meta"><span>2h 08m</span><span class="dot"></span><span>⭐ 8.4</span><span class="dot"></span><span>Action · Drama</span></div>
+<p>Ketika sebuah perjalanan sederhana berubah menjadi misi besar, sekelompok karakter harus menghadapi pilihan yang mengubah masa depan mereka.</p>
+<div class="actions"><button class="cta">▶ Putar Trailer</button><button class="secondary">＋ List</button><button class="secondary">♡ Suka</button></div>
+<div class="detailGrid">
+<div class="infoPanel"><b>Sinopsis</b><p>Detail film ditampilkan di sini. Pada implementasi final, data akan berasal dari TMDB.</p></div>
+<div class="infoPanel"><b>Cast &amp; Genre</b><p>Cast utama · Action · Drama · Adventure</p></div>
+</div>
+</div>
+</div>
+</section>
+<section class="demoSection" id="auth">
+<h2 class="sectionTitle">Authentication</h2>
+<p class="sectionSub">Login dan register menggunakan visual system yang sama.</p>
+<div class="screen">
+<div class="authArea">
+<form class="authCard" onsubmit="return false">
+<h2>Masuk ke Nontonin</h2><p>Lanjutkan pengalaman menontonmu.</p>
+<label>Email</label><input placeholder="nama@email.com" type="email"/>
+<label>Kata sandi</label><input placeholder="••••••••" type="password"/>
+<button class="cta full">Masuk</button>
+<div class="divider">atau</div>
+<button class="google">G Lanjut dengan Google</button>
+<div class="authfoot">Belum punya akun? <span>Daftar</span></div>
+</form>
+<form class="authCard" onsubmit="return false">
+<h2>Buat akun Nontonin</h2><p>Mulai jelajahi film dan series favoritmu.</p>
+<label>Email</label><input placeholder="nama@email.com" type="email"/>
+<label>Kata sandi</label><input placeholder="••••••••" type="password"/>
+<label>Konfirmasi kata sandi</label><input placeholder="••••••••" type="password"/>
+<button class="cta full">Daftar</button>
+<div class="authfoot">Sudah punya akun? <span>Masuk</span></div>
+</form>
+</div>
+</div>
+</section>
+</section>
+</main>
+<footer>
+<div><strong style="color:#fff">Nontonin</strong><br/><br/>Jelajahi film dan series dalam satu pengalaman streaming.</div>
+<div>Data film &amp; metadata menggunakan TMDB. Nontonin tidak memiliki atau meng-host film penuh.</div>
+</footer>
+<div class="mobileNav">
+<a class="active" href="#home"><i>⌂</i>Beranda</a>
+<a href="#browse"><i>⌕</i>Cari</a>
+<a href="#mylist"><i>＋</i>My List</a>
+<a href="#profiles"><i>◉</i>Profil</a>
+</div>
+<div id="modal" onclick="if(event.target===this)closeDetail()" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);backdrop-filter:blur(7px);align-items:center;justify-content:center;padding:20px">
+<div style="max-width:900px;width:100%;background:#15151C;border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;box-shadow:0 30px 100px #000">
+<div style="aspect-ratio:16/7;background:linear-gradient(0deg,#15151C,transparent 65%),url('https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&amp;fit=crop&amp;w=1800&amp;q=85') center/cover;position:relative">
+<button onclick="closeDetail()" style="position:absolute;right:16px;top:16px;width:40px;height:40px;border:0;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:20px">×</button>
+</div>
+<div style="padding:25px 28px 30px">
+<div class="eyebrow">Movie • 2026</div><h2 style="margin:0 0 10px;font-size:32px">The Last Horizon</h2>
+<div class="meta"><span>2026</span><span class="dot"></span><span>2h 08m</span><span class="dot"></span><span>⭐ 8.4</span></div>
+<div class="actions"><button class="cta">▶ Putar Trailer</button><button class="secondary">＋ List</button><button class="secondary">♡ Suka</button></div>
+<p style="color:#bcbcc6;line-height:1.7;font-size:13px;max-width:700px;margin-top:22px">Ketika sebuah perjalanan sederhana berubah menjadi misi besar, sekelompok karakter harus menghadapi pilihan yang mengubah masa depan mereka.</p>
+</div>
+</div>
+</div>
+<script>
+const imgs=[
+ "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80",
+ "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=600&q=80",
+ "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=600&q=80",
+ "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&w=600&q=80",
+ "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80",
+ "https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?auto=format&fit=crop&w=600&q=80",
+ "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80",
+ "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=600&q=80",
+ "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
+ "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80"
+];
+const names=["The Last Horizon","Midnight Stories","Neon City","After Rain","Parallel","Wild Road","The Journey","Echoes","Final Act","Moonlight"];
+function render(id,start=0){
+ const el=document.getElementById(id);
+ names.slice(start,start+10).forEach((n,i)=>{
+   const d=document.createElement("div");d.className="card";
+   d.innerHTML=`<img loading="lazy" src="${imgs[(i+start)%imgs.length]}" alt="${n}"><div class="cardinfo"><span class="badge">${i%2?"Series":"Film"}</span><div class="cardtitle">${n}</div><div class="cardsmall">2026 · ⭐ ${(7.8+i/10).toFixed(1)}</div></div>`;
+   el.appendChild(d);
+ });
+}
+render("trending",0);render("popular",2);render("rated",4);render("mygrid",1);
+function openDetail(){document.getElementById("modal").style.display="flex";document.body.style.overflow="hidden"}
+function closeDetail(){document.getElementById("modal").style.display="none";document.body.style.overflow=""};
+function focusSearch(){alert("Search UI siap dihubungkan ke /search pada implementasi Next.js.")}
+window.addEventListener("scroll",()=>document.getElementById("nav").classList.toggle("scrolled",scrollY>30));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDetail()});
+</script>
+</body>
+</html>

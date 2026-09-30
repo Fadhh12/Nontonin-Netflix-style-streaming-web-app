@@ -1,0 +1,54 @@
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
+
+// Routes that require a logged-in user (SRS G01). /browse, /title, /search
+// stay public for guests (SRS F08).
+const PROTECTED_PATHS = ["/profiles", "/my-list"];
+
+/** Only accept relative paths for returnTo, to prevent open redirects (SRS 2.3). */
+function isSafeReturnTo(path: string | null): path is string {
+  return !!path && path.startsWith("/") && !path.startsWith("//");
+}
+
+export async function updateSession(request: NextRequest) {
+  let response = NextResponse.next({ request });
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value),
+          );
+          response = NextResponse.next({ request });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options),
+          );
+        },
+      },
+    },
+  );
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { pathname } = request.nextUrl;
+  const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
+
+  if (isProtected && !user) {
+    const loginUrl = new URL("/login", request.url);
+    const returnTo = pathname + request.nextUrl.search;
+    if (isSafeReturnTo(returnTo)) {
+      loginUrl.searchParams.set("returnTo", returnTo);
+    }
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return response;
+}
