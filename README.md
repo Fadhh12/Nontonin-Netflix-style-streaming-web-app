@@ -72,7 +72,11 @@ npm run typecheck  # tsc --noEmit
 npm run test       # Vitest unit tests
 npm run build      # production build
 npm run verify:rls # integration check against real Supabase (see Auth and RLS above)
+npm run test:e2e   # Playwright: guest trailer playback, register->profile->My List, search
 ```
+
+`test:e2e` starts its own dev server on port 3100 and runs against real TMDB/Supabase data
+from `.env.local` — no mocking, so results reflect the actual app.
 
 ## Deployment notes (free tier)
 

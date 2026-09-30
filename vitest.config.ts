@@ -7,6 +7,8 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    // tests/e2e is Playwright's (npm run test:e2e), not Vitest's.
+    exclude: ["node_modules/**", "tests/e2e/**"],
   },
   resolve: {
     alias: {
