@@ -4,11 +4,13 @@ import { MediaRowAsync } from "@/components/features/media-row-async";
 import {
   KIDS_GENRE_IDS,
   discoverByGenre,
+  getOverviewFallback,
   getPopularMovies,
   getPopularSeries,
   getTopRatedMovies,
   getTrending,
 } from "@/lib/tmdb/queries";
+import type { Title } from "@/lib/tmdb/mappers";
 import { getMockHero } from "@/lib/mock/titles";
 import { getActiveProfile } from "@/lib/actions/profile-cookie";
 import { getRecentlyViewed } from "@/lib/actions/history";
@@ -20,12 +22,19 @@ export const metadata: Metadata = {
 // Genre ids from TMDB's official list (SDD 3.4 discover/movie|tv).
 const ACTION_GENRE_ID = 28;
 
-async function getHero(isKids: boolean) {
+async function getHero(isKids: boolean): Promise<Title> {
   try {
     const trending = isKids
       ? await discoverByGenre("movie", KIDS_GENRE_IDS)
       : await getTrending();
-    return trending[0] ?? getMockHero();
+    const hero = trending[0] ?? getMockHero();
+
+    // SRS G05: id-ID overview can be empty; fall back to en-US (SRS G05).
+    if (!hero.overview) {
+      hero.overview = await getOverviewFallback(hero.mediaType, hero.id);
+    }
+
+    return hero;
   } catch {
     return getMockHero();
   }
