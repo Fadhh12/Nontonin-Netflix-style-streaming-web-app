@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Search, UserRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { signInDemo } from "@/lib/actions/auth";
 
 const LINKS = [
   { href: "/browse", label: "Beranda" },
@@ -69,12 +70,11 @@ export function Navbar() {
         >
           <UserRound className="h-4 w-4" strokeWidth={2} />
         </Link>
-        <Link
-          href="/login"
-          className={cn(buttonVariants({ size: "sm" }), "hidden md:inline-flex")}
-        >
-          Coba Demo
-        </Link>
+        <form action={signInDemo} className="hidden md:block">
+          <button type="submit" className={cn(buttonVariants({ size: "sm" }))}>
+            Coba Demo
+          </button>
+        </form>
       </div>
     </header>
   );

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/features/navbar";
 import { Footer } from "@/components/features/footer";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { signInDemo } from "@/lib/actions/auth";
 
 const FEATURES = [
   {
@@ -53,12 +54,14 @@ export default function LandingPage() {
               <Link href="/browse" className={buttonVariants({ variant: "primary" })}>
                 Jelajahi
               </Link>
-              <Link
-                href="/browse"
-                className={cn(buttonVariants({ variant: "secondary" }))}
-              >
-                Coba Demo
-              </Link>
+              <form action={signInDemo}>
+                <button
+                  type="submit"
+                  className={cn(buttonVariants({ variant: "secondary" }))}
+                >
+                  Coba Demo
+                </button>
+              </form>
             </div>
           </div>
         </section>
