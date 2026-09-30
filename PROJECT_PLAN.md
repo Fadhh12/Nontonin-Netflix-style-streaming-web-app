@@ -603,7 +603,7 @@ Centang saat selesai. Angka di akhir = estimasi jam. **DoD** = syarat sprint dia
 ### Sprint 2: Detail dan Search (11,5 jam)
 
 - [x] T2.1 Halaman detail `/title/[type]/[id]` dengan revalidate 1 hari + metadata Open Graph, 3
-- [ ] T2.2 Detail sebagai modal (parallel + intercepting routes), 2,5 — **belum dikerjakan**; saat ini detail cuma halaman penuh, klik kartu dari `/browse` pindah halaman (bukan modal di atas browse)
+- [x] T2.2 Detail sebagai modal (parallel + intercepting routes), 2,5 — klik kartu dari `/browse` buka modal di atas halaman (URL tetap update ke `/title/...`); kunjungan langsung/refresh tetap halaman penuh; diverifikasi lewat Playwright
 - [x] T2.3 `TrailerModal` (YouTube embed, fallback tanpa trailer, focus trap), 2
 - [x] T2.4 `/api/search` + halaman pencarian (debounce, muat lebih banyak, state kosong), 3
 - [x] T2.5 Halaman 404 dan error, 1
