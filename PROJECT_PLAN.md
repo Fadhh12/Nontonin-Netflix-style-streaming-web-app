@@ -637,7 +637,7 @@ Centang saat selesai. Angka di akhir = estimasi jam. **DoD** = syarat sprint dia
 - [x] T5.2 E2E Playwright: tamu memutar trailer, daftar ke profil ke My List, pencarian, 4 — 4/4 lolos terhadap TMDB dan Supabase asli; nemuin dan sekaligus jadi bukti perbaikan bug modal profil (lihat commit `a64961c`)
 - [x] T5.3 Audit Lighthouse dan perbaikan performa, aksesibilitas, SEO, 3 — lihat catatan skor di bawah DoD
 - [x] T5.4 Header keamanan + CSP, `sitemap.ts`, `robots.ts`, 1,5
-- [ ] T5.5 README: demo GIF, screenshot, diagram arsitektur, tautan live, cara menjalankan, 2
+- [x] T5.5 README: fitur, stack, diagram arsitektur, cara menjalankan, catatan deployment, "yang dipelajari", 2 — placeholder screenshot/GIF dan tautan live menunggu deploy Vercel (T0.5)
 
 **DoD:** semua angka di Metrik sukses (bagian 1.6) tercapai.
 
