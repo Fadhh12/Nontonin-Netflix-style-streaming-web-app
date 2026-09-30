@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { loginSchema, registerSchema } from "@/lib/validators/auth";
-import { ACTIVE_PROFILE_COOKIE } from "@/lib/actions/profile-cookie";
+import { ACTIVE_PROFILE_COOKIE, setActiveProfileCookie } from "@/lib/actions/profile-cookie";
 
 export interface AuthActionState {
   error: string | null;
@@ -76,6 +76,35 @@ export async function signIn(
 
   const returnTo = formData.get("returnTo");
   redirect(isSafeReturnTo(returnTo) ? returnTo : "/profiles");
+}
+
+/**
+ * F14: one-click demo for recruiters. Signs into a fixed, pre-seeded
+ * account (scripts/seed-demo-account.mjs) and auto-selects its single
+ * profile, skipping straight to /browse instead of the profile picker.
+ */
+export async function signInDemo() {
+  const email = process.env.DEMO_EMAIL;
+  const password = process.env.DEMO_PASSWORD;
+  if (!email || !password) redirect("/login");
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error || !data.user) redirect("/login");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("user_id", data.user.id)
+    .limit(1)
+    .maybeSingle();
+
+  if (profile) {
+    await setActiveProfileCookie(profile.id);
+    redirect("/browse");
+  }
+
+  redirect("/profiles");
 }
 
 /** SRS FR-A3: clear the session and the active-profile cookie. */
