@@ -2,9 +2,13 @@ import type { NextConfig } from "next";
 
 // SDD 3.5: basic security headers + a CSP that allows YouTube trailer embeds
 // and TMDB/Unsplash images, without needing a per-request nonce setup.
+// 'unsafe-eval' is dev-only: Next/Turbopack's dev runtime uses eval() for
+// HMR and stack-trace reconstruction (confirmed by a broken client-side
+// interaction under Playwright until this was scoped to development only).
+// Production never needs it — Next explicitly avoids eval() in prod builds.
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV !== "production" ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://image.tmdb.org https://images.unsplash.com",
   "font-src 'self' data:",

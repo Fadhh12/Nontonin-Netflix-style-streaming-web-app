@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { AVATAR_KEYS } from "@/lib/validators/profile";
 import { AvatarCircle } from "./avatar-circle";
@@ -29,10 +29,23 @@ export function ProfileFormModal({ mode, profile, onClose }: ProfileFormModalPro
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  // Close only on an actual pending(true) -> pending(false)+success transition
+  // — never on mount. A ref that just tracks "have we run once" is not
+  // enough: React Strict Mode's dev-only double effect invocation re-runs
+  // this effect a second time with the same (still-initial) state, and a
+  // naive "skip the first call" guard only protects the first of those two
+  // calls, so the second one closes the modal immediately anyway.
+  const wasPending = useRef(false);
   useEffect(() => {
-    if (state.error === null && !state.fieldErrors) onClose();
+    if (pending) {
+      wasPending.current = true;
+      return;
+    }
+    if (wasPending.current && state.error === null && !state.fieldErrors) {
+      onClose();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
+  }, [pending, state]);
 
   async function handleDelete() {
     if (!profile) return;
