@@ -44,6 +44,7 @@ function buildRow(seed: number, mediaTypeCycle: Title["mediaType"][]): Title[] {
     overview:
       "Ketika sebuah perjalanan sederhana berubah menjadi misi besar, sekelompok karakter harus menghadapi pilihan yang mengubah masa depan mereka.",
     posterUrl: POSTERS[(i + seed) % POSTERS.length],
+    posterPath: null,
     backdropUrl: BACKDROP,
     year: String(2024 + (i % 3)),
     rating: Math.round((7.5 + ((i + seed) % 5) / 10) * 10) / 10,

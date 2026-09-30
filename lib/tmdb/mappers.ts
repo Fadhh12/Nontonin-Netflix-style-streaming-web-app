@@ -9,6 +9,8 @@ export interface Title {
   title: string;
   overview: string;
   posterUrl: string | null;
+  /** Raw TMDB path (e.g. "/abc.jpg"), for storing in my_list/watch_history (SDD 3.3). */
+  posterPath: string | null;
   backdropUrl: string | null;
   year: string | null;
   rating: number;
@@ -28,6 +30,7 @@ export function mapListItem(
     title,
     overview: item.overview,
     posterUrl: tmdbImageUrl(item.poster_path, "w342"),
+    posterPath: item.poster_path,
     backdropUrl: tmdbImageUrl(item.backdrop_path, "w1280"),
     year: date ? date.slice(0, 4) : null,
     rating: Math.round(item.vote_average * 10) / 10,
