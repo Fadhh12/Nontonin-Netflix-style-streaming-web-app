@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
  * Base button. Tokens follow PROJECT_PLAN.md 4.1 and
  * NONTONIN_MASTER_DESIGN_AGENT_PROMPT.md section 09 (compact CTAs, 8px radius).
  */
-const buttonVariants = cva(
+export const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[8px] text-sm font-semibold transition-colors duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
