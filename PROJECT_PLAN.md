@@ -665,12 +665,12 @@ Render Delay.
 
 ### Sprint 6: Stretch (pilih sesuai waktu)
 
-- [ ] F11 Baris rekomendasi dari TMDB
-- [ ] F13 Login Google
-- [ ] F14 Akun demo untuk recruiter
-- [ ] F15 Demo pemutar HLS dengan video berlisensi bebas
-- [ ] F16 Dua bahasa (ID/EN)
-- [ ] F17 PWA
+- [x] F11 Baris rekomendasi dari TMDB — "Karena kamu melihat X" di `/browse`, dari judul terakhir dilihat
+- [ ] F13 Login Google — **ditunda**: butuh OAuth client di Google Cloud Console milik pemilik akun (redirect URI, client secret), tidak bisa dibuat dari sisi kode
+- [x] F14 Akun demo untuk recruiter — tombol "Coba Demo" login satu klik langsung ke `/browse` (`scripts/seed-demo-account.mjs`)
+- [ ] F15 Demo pemutar HLS dengan video berlisensi bebas — **ditunda**: nilai tambahnya kecil buat cerita produk ("bukan streaming film penuh"), berisiko bikin bingung recruiter; skip kecuali diminta eksplisit
+- [ ] F16 Dua bahasa (ID/EN) — **ditunda**: scope besar (semua string UI + TMDB request param), berisiko setengah jadi kalau dikerjakan buru-buru; masuk backlog kalau waktu masih ada
+- [x] F17 PWA — manifest + icon (`next/og`, tanpa file biner baru), bisa di-install ke layar utama
 
 ## 5.3 Aturan main agar tidak chaos
 
