@@ -635,11 +635,33 @@ Centang saat selesai. Angka di akhir = estimasi jam. **DoD** = syarat sprint dia
 
 - [x] T5.1 `/api/health`, workflow keep-alive, 1,5 — diuji manual (`curl /api/health` → `{ok:true,time:...}`); `workflow_dispatch` asli perlu secret `SITE_URL` di GitHub, diisi pemilik akun setelah deploy
 - [x] T5.2 E2E Playwright: tamu memutar trailer, daftar ke profil ke My List, pencarian, 4 — 4/4 lolos terhadap TMDB dan Supabase asli; nemuin dan sekaligus jadi bukti perbaikan bug modal profil (lihat commit `a64961c`)
-- [ ] T5.3 Audit Lighthouse dan perbaikan performa, aksesibilitas, SEO, 3
+- [x] T5.3 Audit Lighthouse dan perbaikan performa, aksesibilitas, SEO, 3 — lihat catatan skor di bawah DoD
 - [x] T5.4 Header keamanan + CSP, `sitemap.ts`, `robots.ts`, 1,5
 - [ ] T5.5 README: demo GIF, screenshot, diagram arsitektur, tautan live, cara menjalankan, 2
 
 **DoD:** semua angka di Metrik sukses (bagian 1.6) tercapai.
+
+**Hasil audit Lighthouse mobile pada `/browse` (build produksi lokal, `npm run build && npm run start`):**
+
+| Kategori | Skor | Target | Status |
+| --- | --- | --- | --- |
+| Accessibility | 100 | 90+ | Lolos |
+| Best Practices | 100 | 90+ | Lolos |
+| SEO | 100 | 90+ | Lolos |
+| Performance | 69–80 (berubah-ubah antar run) | 90+ | **Belum lolos** |
+
+Dua bug aksesibilitas nyata ditemukan dan diperbaiki lewat audit ini: kontras tombol primary
+(teks putih di atas `#FF6B35` cuma 2,83:1, butuh 4,5:1 — diganti teks gelap) dan mismatch
+`aria-label` pada `MediaCard` (teks tersembunyi tidak cocok dengan teks yang terlihat).
+
+Performance belum tembus 90: LCP sekitar 3,7–4,0 detik, 83%-nya adalah **Render Delay**
+(kerja main-thread/hydrasi), bukan keterlambatan jaringan — gambar hero sendiri sudah
+dimuat dalam ~150ms setelah beralih dari CSS `background-image` ke `next/image priority`.
+Angka ini diukur di laptop lokal dengan proses lain berjalan bersamaan, jadi tidak
+representatif untuk deployment edge Vercel asli. **Perlu diukur ulang setelah deploy ke
+Vercel** sebelum dianggap final; jika masih di bawah 90, langkah berikutnya adalah
+mengurangi ukuran JS client (audit komponen client yang tidak perlu) untuk memangkas
+Render Delay.
 
 ### Sprint 6: Stretch (pilih sesuai waktu)
 

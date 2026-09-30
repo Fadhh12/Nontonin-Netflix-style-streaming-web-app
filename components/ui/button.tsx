@@ -11,7 +11,11 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-primary text-white hover:bg-primary-hover",
+        // White-on-#FF6B35 is only a 2.83:1 contrast ratio (WCAG AA needs
+        // 4.5:1 for normal text) — confirmed by a Lighthouse accessibility
+        // audit. Dark text on the same orange clears it comfortably, and
+        // MASTER_DESIGN_AGENT_PROMPT.md 09 already allows either.
+        primary: "bg-primary text-bg hover:bg-primary-hover",
         secondary:
           "bg-white/10 text-text hover:bg-white/15 border border-transparent",
         outline: "border border-border text-text hover:bg-white/5",

@@ -23,13 +23,16 @@ export function MediaCard({ title, className }: { title: Title; className?: stri
         "group relative block w-[168px] shrink-0 overflow-hidden rounded-[8px] bg-surface transition-transform duration-200 ease-out hover:z-10 hover:scale-[1.05] focus-visible:z-10 focus-visible:scale-[1.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
         className,
       )}
-      aria-label={`${title.title}, ${badge}, ${title.year ?? ""}`}
     >
       <div className="relative aspect-2/3">
         {title.posterUrl ? (
           <Image
             src={title.posterUrl}
-            alt={title.title}
+            // Decorative: the badge/title/rating text below is already the
+            // link's accessible name. A duplicate alt text here previously
+            // didn't match that visible text verbatim, which axe's
+            // label-content-name-mismatch rule (correctly) flagged.
+            alt=""
             fill
             unoptimized
             className="object-cover"
