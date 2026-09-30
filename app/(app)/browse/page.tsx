@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { HeroBanner } from "@/components/features/hero-banner";
 import { MediaRowAsync } from "@/components/features/media-row-async";
+import { MediaRow } from "@/components/features/media-row";
 import {
   KIDS_GENRE_IDS,
   discoverByGenre,
   getOverviewFallback,
   getPopularMovies,
   getPopularSeries,
+  getRecommendationsFor,
   getTopRatedMovies,
   getTrending,
 } from "@/lib/tmdb/queries";
@@ -64,12 +66,22 @@ export default async function BrowsePage() {
     );
   }
 
+  const recentlyViewed = await getRecentlyViewed();
+  const mostRecent = recentlyViewed[0];
+
   return (
     <>
       <HeroBanner title={hero} />
       <div className="mx-auto max-w-[1440px] px-6 pb-16 md:px-16">
-        {/* SRS FR-H2: hidden automatically when history is empty (MediaRow renders null). */}
-        <MediaRowAsync heading="Baru dilihat" fetcher={getRecentlyViewed} />
+        {/* SRS FR-H2: hidden automatically when history is empty. */}
+        <MediaRow heading="Baru dilihat" titles={recentlyViewed} />
+        {/* F11: "Karena kamu melihat X", only when there's a most-recent title. */}
+        {mostRecent && (
+          <MediaRowAsync
+            heading={`Karena kamu melihat ${mostRecent.title}`}
+            fetcher={() => getRecommendationsFor(mostRecent.mediaType, mostRecent.id)}
+          />
+        )}
         <MediaRowAsync heading="Trending hari ini" fetcher={getTrending} />
         <MediaRowAsync heading="Populer" fetcher={getPopularMovies} />
         <MediaRowAsync heading="Top Rated" fetcher={getTopRatedMovies} />

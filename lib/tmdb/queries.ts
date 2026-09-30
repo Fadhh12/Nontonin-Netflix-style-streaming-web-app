@@ -97,6 +97,19 @@ export async function getTitleDetail(
   return detail;
 }
 
+/** F11: "Karena kamu melihat X" — TMDB's own recommendations for one title. */
+export async function getRecommendationsFor(
+  mediaType: MediaType,
+  id: number,
+): Promise<Title[]> {
+  const data = await tmdbFetch<TmdbListResponse>(
+    `/${mediaType}/${id}/recommendations`,
+    {},
+    { revalidate: ROW_REVALIDATE },
+  );
+  return data.results.map((item) => mapListItem(item, mediaType));
+}
+
 export async function getVideosFor(mediaType: MediaType, id: number) {
   const data = await tmdbFetch<TmdbDetail>(
     `/${mediaType}/${id}`,
