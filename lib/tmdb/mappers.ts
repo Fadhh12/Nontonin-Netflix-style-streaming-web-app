@@ -1,4 +1,5 @@
 import { tmdbImageUrl } from "./client";
+import { pickTrailer } from "./trailer";
 import type { MediaType, TmdbDetail, TmdbListItem } from "./types";
 
 /** Shape every card/row component in Nontonin renders — TMDB details hidden behind this. */
@@ -39,6 +40,8 @@ export interface TitleDetail extends Title {
   seasons: number | null;
   cast: { id: number; name: string; character: string }[];
   similar: Title[];
+  /** YouTube video key of the best trailer, or null (SRS FR-D2). */
+  trailerKey: string | null;
 }
 
 export function mapDetail(
@@ -63,5 +66,6 @@ export function mapDetail(
       detail.recommendations?.results
         .slice(0, 12)
         .map((r) => mapListItem(r, mediaType)) ?? [],
+    trailerKey: pickTrailer(detail.videos?.results)?.key ?? null,
   };
 }

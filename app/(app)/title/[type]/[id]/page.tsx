@@ -2,12 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MediaRow } from "@/components/features/media-row";
 import { TitleDetailActions } from "@/components/features/title-detail-actions";
-import { getMockDetail } from "@/lib/mock/detail";
+import { getTitleDetail } from "@/lib/tmdb/queries";
+import { youtubeEmbedUrl } from "@/lib/tmdb/trailer";
+import { TmdbError } from "@/lib/tmdb/client";
 import type { MediaType } from "@/lib/tmdb/types";
-
-// TODO(Sprint 2, needs TMDB_READ_TOKEN): replace getMockDetail with
-// lib/tmdb/queries.getTitleDetail, and trailerEmbedUrl with
-// youtubeEmbedUrl(pickTrailer(detail videos)?.key).
 
 interface PageProps {
   params: Promise<{ type: string; id: string }>;
@@ -17,10 +15,21 @@ function parseMediaType(value: string): MediaType | null {
   return value === "movie" || value === "tv" ? value : null;
 }
 
+async function loadDetail(mediaType: MediaType, id: number) {
+  try {
+    return await getTitleDetail(mediaType, id);
+  } catch (err) {
+    // TMDB 404s for an unknown id; surface Nontonin's own 404 either way
+    // rather than a raw error screen (SRS: "Judul tidak ada di TMDB").
+    if (err instanceof TmdbError) return null;
+    throw err;
+  }
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { type, id } = await params;
   const mediaType = parseMediaType(type);
-  const detail = mediaType ? getMockDetail(mediaType, Number(id)) : null;
+  const detail = mediaType ? await loadDetail(mediaType, Number(id)) : null;
   if (!detail) return { title: "Nontonin" };
 
   return {
@@ -41,7 +50,7 @@ export default async function TitleDetailPage({ params }: PageProps) {
 
   if (!mediaType || Number.isNaN(numericId)) notFound();
 
-  const detail = getMockDetail(mediaType, numericId);
+  const detail = await loadDetail(mediaType, numericId);
   if (!detail) notFound();
 
   const durationLabel =
@@ -85,7 +94,10 @@ export default async function TitleDetailPage({ params }: PageProps) {
       </div>
 
       <div className="mx-auto max-w-[1440px] px-6 py-8 md:px-16">
-        <TitleDetailActions title={detail.title} trailerEmbedUrl={null} />
+        <TitleDetailActions
+          title={detail.title}
+          trailerEmbedUrl={detail.trailerKey ? youtubeEmbedUrl(detail.trailerKey) : null}
+        />
 
         <div className="mt-8 grid gap-8 md:grid-cols-[1.4fr_0.8fr]">
           <div>

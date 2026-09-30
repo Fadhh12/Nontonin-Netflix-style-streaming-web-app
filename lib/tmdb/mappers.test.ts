@@ -57,7 +57,18 @@ describe("mapDetail", () => {
       ...movieItem,
       genres: [{ id: 28, name: "Action" }, { id: 18, name: "Drama" }],
       runtime: 128,
-      videos: { results: [] },
+      videos: {
+        results: [
+          {
+            id: "v1",
+            key: "abc123",
+            site: "YouTube",
+            type: "Trailer",
+            official: true,
+            name: "Official Trailer",
+          },
+        ],
+      },
       credits: {
         cast: Array.from({ length: 12 }, (_, i) => ({
           id: i,
@@ -75,6 +86,7 @@ describe("mapDetail", () => {
     expect(result.seasons).toBeNull();
     expect(result.cast).toHaveLength(10); // capped at 10 (SRS FR-D1)
     expect(result.similar).toHaveLength(1);
+    expect(result.trailerKey).toBe("abc123");
   });
 
   it("maps season count and episode runtime for a tv show", () => {
