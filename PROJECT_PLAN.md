@@ -623,13 +623,13 @@ Centang saat selesai. Angka di akhir = estimasi jam. **DoD** = syarat sprint dia
 
 ### Sprint 4: My List, Riwayat, Reaksi (10 jam)
 
-- [ ] T4.1 `toggleMyList` + tombol dengan pembaruan optimistis, 3
-- [ ] T4.2 Halaman `/my-list`, 1,5
-- [ ] T4.3 `recordView`, baris "Baru dilihat", pemangkasan ke 50, 2,5
-- [ ] T4.4 `setReaction` + tombol suka/tidak suka, 2
-- [ ] T4.5 Alur tamu klik List, login, kembali ke judul yang sama, 1
+- [x] T4.1 `toggleMyList` + tombol dengan pembaruan optimistis, 3
+- [x] T4.2 Halaman `/my-list`, 1,5
+- [x] T4.3 `recordView`, baris "Baru dilihat", pemangkasan ke 50, 2,5
+- [x] T4.4 `setReaction` + tombol suka/tidak suka, 2
+- [x] T4.5 Alur tamu klik List, login, kembali ke judul yang sama, 1
 
-**DoD:** AC4 lolos dan 8 fitur Must berjalan di URL produksi.
+**DoD:** AC4 lolos (guest klik List → redirect `/login?returnTo=...` → balik ke judul yang sama). 8 fitur Must berjalan lokal; **deploy produksi (Vercel) masih menunggu pemilik akun** — lihat T0.5.
 
 ### Sprint 5: Polish dan rilis (12 jam)
 

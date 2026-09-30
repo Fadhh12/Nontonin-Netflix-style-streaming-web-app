@@ -11,6 +11,7 @@ import {
 } from "@/lib/tmdb/queries";
 import { getMockHero } from "@/lib/mock/titles";
 import { getActiveProfile } from "@/lib/actions/profile-cookie";
+import { getRecentlyViewed } from "@/lib/actions/history";
 
 export const metadata: Metadata = {
   title: "Beranda — Nontonin",
@@ -58,6 +59,8 @@ export default async function BrowsePage() {
     <>
       <HeroBanner title={hero} />
       <div className="mx-auto max-w-[1440px] px-6 pb-16 md:px-16">
+        {/* SRS FR-H2: hidden automatically when history is empty (MediaRow renders null). */}
+        <MediaRowAsync heading="Baru dilihat" fetcher={getRecentlyViewed} />
         <MediaRowAsync heading="Trending hari ini" fetcher={getTrending} />
         <MediaRowAsync heading="Populer" fetcher={getPopularMovies} />
         <MediaRowAsync heading="Top Rated" fetcher={getTopRatedMovies} />
