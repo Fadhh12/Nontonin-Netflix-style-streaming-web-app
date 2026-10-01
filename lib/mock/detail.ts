@@ -32,5 +32,6 @@ export function getMockDetail(mediaType: MediaType, id: number): TitleDetail | n
     cast: CAST.map((name, i) => ({ id: i, name, character: `Karakter ${i + 1}` })),
     similar: getMockPopular().filter((t) => t.id !== id).slice(0, 12),
     trailerKey: null,
+    videos: [],
   };
 }

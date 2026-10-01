@@ -1,5 +1,6 @@
 import { tmdbFetch } from "./client";
 import { mapDetail, mapListItem, type Title, type TitleDetail } from "./mappers";
+import { pickTrailer } from "./trailer";
 import type { MediaType, TmdbDetail, TmdbListResponse } from "./types";
 
 // Revalidation windows from PROJECT_PLAN.md 3.5.
@@ -94,6 +95,15 @@ export async function getTitleDetail(
     detail.overview = await getOverviewFallback(mediaType, id);
   }
 
+  // SRS G05 fallback, same issue as overview: TMDB's /videos is filtered by
+  // the request's `language`, and most official trailers are only tagged
+  // under en-US — id-ID returns an empty list for the large majority of
+  // titles (confirmed directly against the API). Always resolve videos
+  // from en-US so a real trailer isn't reported as unavailable.
+  const videos = await getVideosFor(mediaType, id, "en-US");
+  detail.trailerKey = pickTrailer(videos)?.key ?? null;
+  detail.videos = videos;
+
   return detail;
 }
 
@@ -110,10 +120,11 @@ export async function getRecommendationsFor(
   return data.results.map((item) => mapListItem(item, mediaType));
 }
 
-export async function getVideosFor(mediaType: MediaType, id: number) {
+/** Defaults to en-US: see the fallback note in getTitleDetail above. */
+export async function getVideosFor(mediaType: MediaType, id: number, language = "en-US") {
   const data = await tmdbFetch<TmdbDetail>(
     `/${mediaType}/${id}`,
-    { append_to_response: "videos" },
+    { append_to_response: "videos", language },
     { revalidate: DETAIL_REVALIDATE },
   );
   return data.videos?.results ?? [];
