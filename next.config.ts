@@ -10,7 +10,7 @@ const CSP = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV !== "production" ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://image.tmdb.org https://images.unsplash.com",
+  "img-src 'self' data: https://image.tmdb.org https://images.unsplash.com https://img.youtube.com",
   "font-src 'self' data:",
   "connect-src 'self'",
   "frame-src https://www.youtube.com",

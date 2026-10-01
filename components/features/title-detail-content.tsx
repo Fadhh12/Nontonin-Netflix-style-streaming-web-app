@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { MediaRow } from "@/components/features/media-row";
 import { TitleDetailActions } from "@/components/features/title-detail-actions";
+import { VideoGallery } from "@/components/features/video-gallery";
 import { getTitleDetail } from "@/lib/tmdb/queries";
 import { youtubeEmbedUrl } from "@/lib/tmdb/trailer";
 import { TmdbError } from "@/lib/tmdb/client";
@@ -124,6 +125,8 @@ export async function TitleDetailContent({ mediaType, id, variant }: TitleDetail
             </ul>
           </div>
         </div>
+
+        <VideoGallery title={detail.title} videos={detail.videos} />
 
         <MediaRow heading="Judul serupa" titles={detail.similar} />
       </div>
